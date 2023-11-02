@@ -19,7 +19,7 @@ public class Receive_Mail {
 			props.put("mail.pop3.auth", "true");	   // Authentifizierung aktivieren
 
 			// Session-Objekt erstellen
-			Session session = Session.getDefaultInstance(props);
+			Session session = Session.getInstance(props); // Session.
 
 			// Verbindung zum Store herstellen
 			Store store = session.getStore();
@@ -40,15 +40,17 @@ public class Receive_Mail {
 			// Nachrichten abrufen und anzeigen
 			Message[] messages = inbox.getMessages();
 			for (Message message : messages) {
+				System.out.println("---------------------------");
 				System.out.println("Nachrichtennummer: " + message.getMessageNumber());
 				System.out.println("Betreff: " + message.getSubject());
 				System.out.println("Von: " + message.getFrom()[0]);
+				System.out.println("Gesendet am: " + message.getSentDate());
 				System.out.println("Inhalt: " + message.getContent().toString());
 				System.out.println("---------------------------");
 			}
 
 			// Ressourcen schließen
-			inbox.close(false);
+			inbox.close();
 			store.close();
 		} catch(Exception e) {
 			e.printStackTrace();
