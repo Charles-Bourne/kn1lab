@@ -56,10 +56,8 @@ public class Sender {
                    // Auf ACK warten und erst dann Schleifenzähler inkrementieren
                    clientSocket.receive(packetInSerialized);
                    Packet ackPacket = getDeserializedPacket(packetInBytes);
-                   if (ackPacket.isAckFlag()) {
+                   if (ackPacket.isAckFlag() && ackPacket.getSeq() == seqNum + 1) {
                        System.out.println("Receive ACK packet with SEQ-NUM: " + ackPacket.getSeq() + " with ACK-NUM: " + ackPacket.getAckNum());
-                   }
-                   if (ackPacket.isAckFlag() && ackPacket.getSeq() == seqNum) {
                        ackReceived = true;
                    }
                } catch (SocketTimeoutException e) {
