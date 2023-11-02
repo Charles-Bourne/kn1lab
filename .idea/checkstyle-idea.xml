@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="CheckStyle-IDEA" serialisationVersion="2">
+    <checkstyleVersion>8.26</checkstyleVersion>
+    <scanScope>JavaOnly</scanScope>
+    <option name="thirdPartyClasspath" />
+    <option name="activeLocationIds">
+      <option value="307bd5f4-805f-4b22-a537-10ed6d23c5a3" />
+    </option>
+    <option name="locations">
+      <list>
+        <ConfigurationLocation id="bundled-sun-checks" type="BUNDLED" scope="All" description="Sun Checks">(bundled)</ConfigurationLocation>
+        <ConfigurationLocation id="bundled-google-checks" type="BUNDLED" scope="All" description="Google Checks">(bundled)</ConfigurationLocation>
+        <ConfigurationLocation id="96927e09-0bac-4e18-9f43-4520f0fad9b7" type="HTTP_URL" scope="All" description="KIT_ws19-programmieren">https://git.scc.kit.edu/checkstyle/general/raw/master/ws19/programmieren/CheckstyleRules_KIT.xml</ConfigurationLocation>
+        <ConfigurationLocation id="307bd5f4-805f-4b22-a537-10ed6d23c5a3" type="LOCAL_FILE" scope="All" description="KIT_ws19-programmieren_local">$PROJECT_DIR$/../CHECKSTYLE/KIT_checkstyle/ws19/programmieren/CheckstyleRules_KIT.xml</ConfigurationLocation>
+      </list>
+    </option>
+  </component>
+</project>
