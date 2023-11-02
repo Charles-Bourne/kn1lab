@@ -16,8 +16,7 @@ public class Send_Mail {
 		try {
 			// Setzen der Properties und deren Werte
 			Properties props = new Properties();
-			props.put("mail.smtp.host", "localhost");
-			props.put("mail.smtp.port", "25");
+			props.put("mail.smtp.host", "localhost"); // SMTP-Host
 			props.put("mail.smtp.auth", "false");
 			props.put("mail.smtp.starttls.enable", "false");
 
@@ -28,7 +27,7 @@ public class Send_Mail {
 			Message message = new MimeMessage(session);
 			message.setFrom(new InternetAddress("from-labrat@localhost"));
 			message.setRecipients(Message.RecipientType.TO, InternetAddress.parse("labrat@localhost"));
-			message.setSubject("Testnachricht");
+			message.setSubject("Testnachricht Betreff");
 			message.setText("Hallo Welt!");
 
 			// Nachricht senden
