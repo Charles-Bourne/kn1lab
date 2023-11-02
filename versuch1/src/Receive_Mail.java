@@ -16,13 +16,18 @@ public class Receive_Mail {
 			Properties props = new Properties();
 			props.put("mail.store.protocol", "pop3");  // Verwendetes Protokoll
 			props.put("mail.pop3.host", "localhost");  // POP3-Host-Name
+			props.put("mail.pop3.auth", "true");	   // Authentifizierung aktivieren
 
 			// Session-Objekt erstellen
 			Session session = Session.getDefaultInstance(props);
 
 			// Verbindung zum Store herstellen
 			Store store = session.getStore();
-			store.connect();
+
+			// Benutzername und Passwort für den Verbindungsaufbau
+			String username = "labrat";
+			String password = "kn1lab";
+			store.connect(username, password);
 
 			// Öffnen des Posteingangsfolders
 			Folder inbox = store.getFolder("INBOX");
