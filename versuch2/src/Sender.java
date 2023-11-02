@@ -51,13 +51,14 @@ public class Sender {
                sendWord(clientSocket, destIPAddress, destPort, seqNum, seqNum + 1, words.get(seqNum));
                // ACK empfangen
                try {
-                   byte[] packetInBytes = new byte[1024];
+                   byte[] packetInBytes = new byte[256];
                    DatagramPacket packetInSerialized = new DatagramPacket(packetInBytes, packetInBytes.length);
                    // Auf ACK warten und erst dann Schleifenzähler inkrementieren
                    clientSocket.receive(packetInSerialized);
                    Packet ackPacket = getDeserializedPacket(packetInBytes);
                    if (ackPacket.isAckFlag() && ackPacket.getAckNum() == seqNum + 1) {
                        ackReceived = true;
+                       System.out.println("Receive ACK for packet " + seqNum + " with ACK-Num " + ackPacket.getAckNum());
                    }
                } catch (SocketTimeoutException e) {
                    System.out.println("Receive timed out, retrying...");
