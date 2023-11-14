@@ -2,6 +2,7 @@ import java.io.*;
 import java.net.*;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Random;
 
 /**
  * Die "Klasse" Sender liest einen String von der Konsole und zerlegt ihn in einzelne Worte. Jedes Wort wird in ein
@@ -42,23 +43,30 @@ public class Sender {
         ArrayList<String> words = getWordsFromSentence( getSentenceFromConsole() );
         // EOT (End Of Transmission) anfügen
         words.add("EOT");
-        
+
+        // Sequenznummer und Acknowledgement Nummer vom Client
+        int seqNumFromClient = 1;
+        int ackNumFromClient = 0;
+
         // Iteration über den Konsolentext
-        for (int seqNum = 0; seqNum < words.size(); seqNum++) {
+        for (int wordIndex = 0; wordIndex < words.size(); wordIndex++) {
            boolean ackReceived = false;
            while (!ackReceived) {
                //sende Wort
-               sendWord(clientSocket, destIPAddress, destPort, seqNum, seqNum + 1, words.get(seqNum));
+               sendWord(clientSocket, destIPAddress, destPort, seqNumFromClient, ackNumFromClient, words.get(wordIndex));
+               int payloadLength = words.get(wordIndex).getBytes().length;
                // ACK empfangen
                try {
-                   byte[] packetInBytes = new byte[256];
-                   DatagramPacket packetInSerialized = new DatagramPacket(packetInBytes, packetInBytes.length);
+                   byte[] receivedPacketInBytes = new byte[256];
+                   DatagramPacket receivedDatagramPacket = new DatagramPacket(receivedPacketInBytes, receivedPacketInBytes.length);
                    // Auf ACK warten und erst dann Schleifenzähler inkrementieren
-                   clientSocket.receive(packetInSerialized);
-                   Packet ackPacket = getDeserializedPacket(packetInBytes);
-                   if (ackPacket.isAckFlag() && ackPacket.getSeq() == seqNum + 1) {
-                       System.out.println("Receive ACK packet with SEQ-NUM: " + ackPacket.getSeq() + " with ACK-NUM: " + ackPacket.getAckNum());
+                   clientSocket.receive(receivedDatagramPacket);
+                   Packet receivedPacket = getDeserializedPacket(receivedPacketInBytes);
+                   if (receivedPacket.isAckFlag() && receivedPacket.getAckNum() == seqNumFromClient + payloadLength) {
+                       System.out.println("Receive ACK packet with SEQ-NUM: " + receivedPacket.getSeq() + " with ACK-NUM: " + receivedPacket.getAckNum());
                        ackReceived = true;
+                       seqNumFromClient += payloadLength;
+                       ackNumFromClient = receivedPacket.getSeq() + 1;
                    }
                } catch (SocketTimeoutException e) {
                    System.out.println("Receive timed out, retrying...");
@@ -95,9 +103,9 @@ public class Sender {
         return (Packet) o.readObject();
     }
 
-    private void sendWord(DatagramSocket socket, InetAddress destInetAddress, int destPort, int seq, int ackNum, String word) throws IOException {
+    private void sendWord(DatagramSocket socket, InetAddress destInetAddress, int destPort, int seqNum, int ackNum, String word) throws IOException {
         // Erzeugen eines neuen Packets
-        Packet packet = new Packet(seq, ackNum, false, word.getBytes());
+        Packet packet = new Packet(seqNum, ackNum, false, word.getBytes());
         // Serialisieren des Packets für das Senden
         byte[] serializedPacket = getSerializedPacket(packet);
         // Erstellen eines DatagramPackets und Senden
