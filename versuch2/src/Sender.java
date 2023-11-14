@@ -69,7 +69,7 @@ public class Sender {
                        ackNumFromClient = receivedPacket.getSeq() + 1;
                    }
                } catch (SocketTimeoutException e) {
-                   System.out.println("Receive timed out, retrying...");
+                   System.out.println("Time out. ACP package not received on time. Retrying...");
                } catch (ClassNotFoundException e) {
                    e.printStackTrace();
                }
