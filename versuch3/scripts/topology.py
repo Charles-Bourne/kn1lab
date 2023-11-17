@@ -45,7 +45,7 @@ class MyTopo(Topo):
         # NEW #
         self.addLink(r1, r2)
         self.addLink(r2, sw2)
-        self.addLink(sw2, burak)
+        self.addLink(burak, sw2)
 
 
 # configuration
