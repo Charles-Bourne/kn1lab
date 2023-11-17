@@ -59,6 +59,7 @@ def conf(network):
 
     network['r2'].cmd('ip addr add 10.0.2.1/25 dev r2-eth0')
     network['r2'].cmd('ip addr add 10.0.1.65/31 dev r2-eth1')
+    network['r2'].cmd('ip route add 10.0.1.0/29 via 10.0.1.64 dev r2-eth1')
     network['r2'].cmd('sysctl net.ipv4.conf.all.forwarding=1')
     
     # client routing
@@ -67,8 +68,9 @@ def conf(network):
     network['ben'].cmd('ip route add default via 10.0.0.1')
     network['lukas'].cmd('ip route add default via 10.0.0.1')
     network['elias'].cmd('ip route add default via 10.0.0.1')
-
     network['nas'].cmd('ip route add default via 10.0.1.1')
+    # NEW #
+    network['burak'].cmd('ip route add default via 10.0.2.1')
 
 def nettopo(**kwargs):
     topo = MyTopo()
