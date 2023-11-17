@@ -40,11 +40,11 @@ class MyTopo(Topo):
         self.addLink(ben, sw1)
         self.addLink(elias, sw1)
         # - nas over router to switch
-        self.addLink(r1, sw1)
-        self.addLink(nas, r1)
+        self.addLink(r1, sw1) # r1-eth0
+        self.addLink(nas, r1) # r1-eth1
         # NEW #
-        self.addLink(r1, r2)
-        self.addLink(r2, sw2)
+        self.addLink(r1, r2)  # r1-eth2 <-> r2-eth0
+        self.addLink(r2, sw2)  # r2-eth1
         self.addLink(burak, sw2)
 
 
@@ -58,9 +58,9 @@ def conf(network):
     network['r1'].cmd('ip route add 10.0.2.0/25 via 10.0.1.65 dev r1-eth2')
     network['r1'].cmd('sysctl net.ipv4.conf.all.forwarding=1')
 
-    network['r2'].cmd('ip addr add 10.0.2.1/25 dev r2-eth0')
-    network['r2'].cmd('ip addr add 10.0.1.65/31 dev r2-eth1')
-    network['r2'].cmd('ip route add 10.0.1.0/29 via 10.0.1.64 dev r2-eth1')
+    network['r2'].cmd('ip addr add 10.0.1.65/31 dev r2-eth0')
+    network['r2'].cmd('ip addr add 10.0.2.1/25 dev r2-eth1')
+    network['r2'].cmd('ip route add 10.0.1.0/29 via 10.0.1.64 dev r2-eth0')
     network['r2'].cmd('sysctl net.ipv4.conf.all.forwarding=1')
     
     # client routing
